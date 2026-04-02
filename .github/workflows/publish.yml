@@ -72,5 +72,5 @@ jobs:
         --title "Add ${{ steps.package_name.outputs.result }} ${{ steps.version.outputs.result }}"
         --body "Add ${{ steps.package_name.outputs.result }} version ${{ steps.version.outputs.result }} to the mason registry"
       env:
-        GH_TOKEN: ${{ github.token}}
+        GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO_PAT }}
 
