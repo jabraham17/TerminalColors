@@ -56,6 +56,8 @@ jobs:
         git add .
         git commit -m "Add ${PACKAGE_NAME} ${VERSION}"
         git push --set-upstream origin "${PACKAGE_NAME}-${VERSION}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.MASON_REGISTRY_PAT }}
     - name: Create pull request
       run: >
         gh pr create
@@ -64,6 +66,4 @@ jobs:
         --base main
         --title "Add ${{ steps.package_name.outputs.result }} ${{ steps.version.outputs.result }}"
         --body "Add ${{ steps.package_name.outputs.result }} version ${{ steps.version.outputs.result }} to the mason registry"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
