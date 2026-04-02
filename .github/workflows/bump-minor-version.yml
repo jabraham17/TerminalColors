@@ -47,7 +47,7 @@ jobs:
     - name: Commit and push changes
       run: |
         git add Mason.toml
-        git commit -m "Bump version to $NEW_VERSION"
+        git commit -m "Bump version to $${{ steps.bump_version.outputs.result }}"
         git push origin update-version
     - name: create pull request
       run: >
