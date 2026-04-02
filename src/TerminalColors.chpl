@@ -12,8 +12,6 @@
   The :type:`modifiers` record defines a subset of widely supported ANSI text
   modifiers, which can be combined together.
 */
-@chpldoc.noUsage
-@chpldoc.noAutoInclude
 module TerminalColors {
   import BitOps;
 
