@@ -60,6 +60,8 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.MASON_REGISTRY_PAT }}
+        repository: jabraham17/mason-registry
+        branch: "${{ steps.package_name.outputs.result }}-${{ steps.version.outputs.result }}"
     - name: Create pull request
       run: >
         gh pr create
