@@ -38,6 +38,8 @@ jobs:
         run: |
           chplcheck src/**/*.chpl
       - name: Check undocumented symbols
+        shell: bash
         run: |
+          shopt -s globstar
           chpl_home=$(chpl --print-chpl-home)
           CHPL_HOME=$chpl_home $chpl_home/tools/chpldoc/findUndocumentedSymbols --ci src/**/*.chpl
