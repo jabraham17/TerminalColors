@@ -57,11 +57,12 @@ jobs:
         git add .
         git commit -m "Add ${PACKAGE_NAME} ${VERSION}"
     - name: Push changes
-      uses: ad-m/github-push-action@master
+      uses: ad-m/github-push-action@v1
       with:
         github_token: ${{ secrets.MASON_REGISTRY_PAT }}
         repository: jabraham17/mason-registry
         branch: "${{ steps.package_name.outputs.result }}-${{ steps.version.outputs.result }}"
+        directory: mason-registry
     - name: Create pull request
       run: >
         gh pr create
