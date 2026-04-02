@@ -56,9 +56,10 @@ jobs:
         cp ../source-repo/Mason.toml "Bricks/${PACKAGE_NAME}/${VERSION}.toml"
         git add .
         git commit -m "Add ${PACKAGE_NAME} ${VERSION}"
-        git push --set-upstream origin "${PACKAGE_NAME}-${VERSION}"
-      env:
-        GITHUB_TOKEN: ${{ secrets.MASON_REGISTRY_PAT }}
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.MASON_REGISTRY_PAT }}
     - name: Create pull request
       run: >
         gh pr create
