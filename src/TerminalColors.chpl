@@ -102,12 +102,12 @@ module TerminalColors {
     proc finish() do return PREFIX + this.getFGSelector() + "m";
     @chpldoc.nodoc
     operator +(c: color, str: string) do
-      if !this.isNormal()
+      if !c.isNormal()
         then return c.finish() + str;
         else return str;
     @chpldoc.nodoc
     operator +(str: string, c: color) do
-      if !this.isNormal()
+      if !c.isNormal()
         then return str + c.finish();
         else return str;
 
@@ -163,12 +163,12 @@ module TerminalColors {
     proc finish() do return PREFIX + this.getSelector() + "m";
     @chpldoc.nodoc
     operator +(m: modifiers, str: string) do
-      if !this.isNormal()
+      if !m.isNormal()
         then return m.finish() + str;
         else return str;
     @chpldoc.nodoc
     operator +(str: string, m: modifiers) do
-      if !this.isNormal()
+      if !m.isNormal()
         then return str + m.finish();
         else return str;
     @chpldoc.nodoc
