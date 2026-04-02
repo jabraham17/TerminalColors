@@ -39,7 +39,7 @@ jobs:
         NEW_MINOR=$((MINOR + 1))
         NEW_VERSION="$MAJOR.$NEW_MINOR.0"
         echo "New version: $NEW_VERSION"
-        echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+        echo "result=$NEW_VERSION" >> $GITHUB_OUTPUT
     - name: Update version in Mason.toml
       uses: mikefarah/yq@v4
       with:
