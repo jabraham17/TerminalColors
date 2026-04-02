@@ -1,0 +1,67 @@
+name: Publish to mason registry
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Get version from Mason.toml
+      id: version
+      uses: mikefarah/yq@v4
+      with:
+        cmd: yq .brick.version Mason.toml
+    - name: Create tag
+      id: create_tag
+      run: |
+        VERSION=${{ steps.version.outputs.result }}
+        git tag -a "v$VERSION" -m "Release version $VERSION"
+        git push origin --tags
+  push-to-mason-registry:
+    needs: create-tag
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        path: source-repo
+    - name: Get version from Mason.toml
+      id: version
+      uses: mikefarah/yq@v4
+      with:
+        cmd: yq .brick.version source-repo/Mason.toml
+    - name: Get package name
+      id: package_name
+      uses: mikefarah/yq@v4
+      with:
+        cmd: yq .brick.name source-repo/Mason.toml
+    - name: Checkout mason-registry fork
+      uses: actions/checkout@v4
+      with:
+        repository: jabraham17/mason-registry
+        path: mason-registry
+    - name: Create branch and add package
+      run: |
+        VERSION="${{ steps.version.outputs.result }}"
+        PACKAGE_NAME="${{ steps.package_name.outputs.result }}"
+        cd mason-registry
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git checkout -b "${PACKAGE_NAME}-${VERSION}"
+        mkdir -p "Bricks/${PACKAGE_NAME}"
+        cp ../source-repo/Mason.toml "Bricks/${PACKAGE_NAME}/${VERSION}.toml"
+        git add .
+        git commit -m "Add ${PACKAGE_NAME} ${VERSION}"
+        git push --set-upstream origin "${PACKAGE_NAME}-${VERSION}"
+    - name: Create pull request
+      run: >
+        gh pr create
+        --repo chapel-lang/mason-registry
+        --head "jabraham17:${{ steps.package_name.outputs.result }}-${{ steps.version.outputs.result }}"
+        --base main
+        --title "Add ${{ steps.package_name.outputs.result }} ${{ steps.version.outputs.result }}"
+        --body "Add ${{ steps.package_name.outputs.result }} version ${{ steps.version.outputs.result }} to the mason registry"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
