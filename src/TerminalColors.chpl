@@ -69,6 +69,8 @@ module TerminalColors {
     @chpldoc.nodoc
     var selector: string;
     @chpldoc.nodoc
+    var intense: bool = false;
+    @chpldoc.nodoc
     proc type black do return new color("0");
     @chpldoc.nodoc
     proc type red do return new color("1");
@@ -112,9 +114,11 @@ module TerminalColors {
     @chpldoc.nodoc
     proc isNormal() do return this == color.default;
     @chpldoc.nodoc
-    proc getFGSelector() do return "3" + selector;
+    proc getFGSelector() do
+      return if intense then "9" + selector else "3" + selector;
     @chpldoc.nodoc
-    proc getBGSelector() do return "4" + selector;
+    proc getBGSelector() do
+      return if intense then "10" + selector else "4" + selector;
   }
 
   /*
@@ -222,9 +226,10 @@ module TerminalColors {
 
        writeln(style("Hello, world!").fg(blue()));
   */
-  proc styledText.fg(c: color) {
+  proc styledText.fg(c: color, intense=false) {
     var newStyle = this;
     newStyle._fg = c;
+    newStyle._fg.intense = intense;
     return newStyle;
   }
   /*
@@ -236,9 +241,10 @@ module TerminalColors {
 
        writeln(style("Hello, world!").bg(red()));
   */
-  proc styledText.bg(c: color) {
+  proc styledText.bg(c: color, intense=false) {
     var newStyle = this;
     newStyle._bg = c;
+    newStyle._bg.intense = intense;
     return newStyle;
   }
   /*

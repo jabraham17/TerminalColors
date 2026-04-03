@@ -7,6 +7,9 @@ proc main() {
   printBasicColors();
   printBasicBoldColors();
   printBasicDimColors();
+  printIntenseColors();
+  printIntenseBoldColors();
+  printIntenseDimColors();
 }
 
 const colorNames =
@@ -36,6 +39,30 @@ proc printBasicDimColors() {
   write("Dim colors:");
   for (c, name) in zip(colors, colorNames) {
     write(" ", style(name).fg(c).dim());
+  }
+  writeln();
+}
+
+proc printIntenseColors() {
+  write("Intense colors:");
+  for (c, name) in zip(colors, colorNames) {
+    write(" ", style(name).fg(c, intense=true));
+  }
+  writeln();
+}
+
+proc printIntenseBoldColors() {
+  write("Intense bold colors:");
+  for (c, name) in zip(colors, colorNames) {
+    write(" ", style(name).fg(c, intense=true).bold());
+  }
+  writeln();
+}
+
+proc printIntenseDimColors() {
+  write("Intense dim colors:");
+  for (c, name) in zip(colors, colorNames) {
+    write(" ", style(name).fg(c, intense=true).dim());
   }
   writeln();
 }
