@@ -24,7 +24,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: chapel/chapel:latest
+      # TODO: require nightly to get new features until 2.9 comes out
+      image: chapel/chapel:nightly
     steps:
       - name: Checkout
         uses: actions/checkout@v4
